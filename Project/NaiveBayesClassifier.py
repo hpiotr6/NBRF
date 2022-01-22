@@ -1,8 +1,9 @@
 # import pandas as pd
 # import seaborn as sns
 # import matplotlib.pyplot as plt
-# import numpy as np
-from collections import defaultdict
+import numpy as np
+from collections import defaultdict, Counter
+
 # import math
 # import os
 
@@ -44,7 +45,6 @@ from collections import defaultdict
 
 
 class NaiveBayes:
-
     def __init__(self) -> None:
         pass
 
@@ -55,11 +55,23 @@ class NaiveBayes:
         return label_indices
 
     def get_prior(self, label_indices):
-        prior = {
-            label: len(indices)
-            for label, indices in label_indices.items()
-        }
+        prior = {label: len(indices)
+                 for label, indices in label_indices.items()}
         total = sum(prior.values())
         for label in prior:
             prior[label] /= total
         return prior
+
+    def get_likelihood(self, X, y, smoothing=0):
+        label_indices = self.get_label_indices(y)
+        likelihood = {}
+        for label, indices in label_indices.items():
+            likelihood[label] = X[indices, :]
+            homogenized_X = X[indices, :]
+            for col in range(homogenized_X.shape[1]):
+                Counter(homogenized_X[:, col])
+
+        #     total_count = len(indices)
+        #     likelihood[label] = likelihood[label] / \
+        #         (total_count + 2 * smoothing)
+        # return likelihood
