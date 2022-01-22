@@ -62,16 +62,13 @@ class NaiveBayes:
             prior[label] /= total
         return prior
 
-    def get_likelihood(self, X, y, smoothing=0):
+    def get_likelihood(self, X, y, smoothing=1):
         label_indices = self.get_label_indices(y)
         likelihood = {}
         for label, indices in label_indices.items():
-            likelihood[label] = X[indices, :]
-            homogenized_X = X[indices, :]
-            for col in range(homogenized_X.shape[1]):
-                Counter(homogenized_X[:, col])
-
-        #     total_count = len(indices)
-        #     likelihood[label] = likelihood[label] / \
-        #         (total_count + 2 * smoothing)
-        # return likelihood
+            likelihood[label] = X[indices, :].sum(axis=0)
+            + smoothing
+            total_count = len(indices)
+            likelihood[label] = likelihood[label] / \
+                (total_count + 2 * smoothing)
+        return likelihood

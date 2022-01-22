@@ -3,6 +3,7 @@ from Project.NaiveBayesClassifier import NaiveBayes
 import numpy as np
 import pandas as pd
 import pytest
+from sklearn.preprocessing import OneHotEncoder
 
 
 @pytest.fixture
@@ -40,10 +41,20 @@ def test_get_prior(y, nbClassifier):
     y_list = y.flatten().tolist()
     label_indices = nbClassifier.get_label_indices(y_list)
     prior = nbClassifier.get_prior(label_indices)
-    print(prior)
+    # print(prior)
     assert len(prior) == 2
 
 
 def test_get_likelihood(y, X, nbClassifier):
     y_list = y.flatten().tolist()
-    nbClassifier.get_likelihood(X, y_list)
+    enc = OneHotEncoder()
+    X_enc = enc.fit_transform(X)
+    print(type(X_enc.todense()))
+    print("X_encoded: ", X_enc.todense())
+
+    liks = nbClassifier.get_likelihood(X_enc, y_list)
+    print()
+    print("likelihoods:", liks)
+    print("shape: ", liks["p"].shape)
+
+    assert len(liks) == 2
