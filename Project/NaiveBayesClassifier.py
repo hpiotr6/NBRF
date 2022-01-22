@@ -72,3 +72,22 @@ class NaiveBayes:
             likelihood[label] = likelihood[label] / \
                 (total_count + 2 * smoothing)
         return likelihood
+
+    def get_posterior(self, X, prior, likelihood):
+        posteriors = []
+        for x in X:
+            # posterior is proportional to prior * likelihood
+            posterior = prior.copy()
+            for label, likelihood_label in likelihood.items():
+                for index, bool_value in enumerate(x):
+                    posterior[label] *= likelihood_label[index] if bool_value else (
+                        1 - likelihood_label[index])
+            # normalize so that all sums up to 1
+            sum_posterior = sum(posterior.values())
+            for label in posterior:
+                if posterior[label] == float('inf'):
+                    posterior[label] = 1.0
+                else:
+                    posterior[label] /= sum_posterior
+            posteriors.append(posterior.copy())
+        return posteriors

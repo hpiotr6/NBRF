@@ -49,12 +49,24 @@ def test_get_likelihood(y, X, nbClassifier):
     y_list = y.flatten().tolist()
     enc = OneHotEncoder()
     X_enc = enc.fit_transform(X)
-    print(type(X_enc.todense()))
-    print("X_encoded: ", X_enc.todense())
+    print(type(X_enc.toarray()))
+    print("X_encoded: ", X_enc.toarray())
 
-    liks = nbClassifier.get_likelihood(X_enc, y_list)
+    liks = nbClassifier.get_likelihood(X_enc.toarray(), y_list)
     print()
     print("likelihoods:", liks)
     print("shape: ", liks["p"].shape)
 
     assert len(liks) == 2
+
+
+def test_get_posteriors(y, X, nbClassifier):
+    y_list = y.flatten().tolist()
+    enc = OneHotEncoder()
+    X_enc = enc.fit_transform(X)
+    X_enc = X_enc.toarray()
+    label_indices = nbClassifier.get_label_indices(y_list)
+    prior = nbClassifier.get_prior(label_indices)
+    liks = nbClassifier.get_likelihood(X_enc, y_list)
+    posts = nbClassifier.get_posterior(X_enc, prior, liks)
+    print(posts)
