@@ -32,6 +32,6 @@ class RandomForest:
         self.clfs = clfs
         return self.clfs
 
-    # def predict(self, X):
-    #     for clf in self.clfs:
-    #         prediction = clf.predict(X)
+    def predict(self, X):
+        for clf in self.clfs:
+            prediction = clf.predict(X)

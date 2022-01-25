@@ -62,4 +62,4 @@ class NaiveBayes:
         posterior = self.get_posterior(X, self.prior, self.likelihood)
         result = [max(prediction, key=prediction.get)
                   for prediction in posterior]
-        return result
+        return np.array(result)
