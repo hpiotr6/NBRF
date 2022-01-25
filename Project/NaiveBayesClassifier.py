@@ -1,5 +1,5 @@
 import numpy as np
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 
 class NaiveBayes:
@@ -63,3 +63,9 @@ class NaiveBayes:
         result = [max(prediction, key=prediction.get)
                   for prediction in posterior]
         return np.array(result)
+
+    # def predict_proba(self, X):
+    #     if self.prior is None or self.likelihood is None:
+    #         raise ValueError("Fit classifier first to use predict")
+    #     posterior = self.get_posterior(X, self.prior, self.likelihood)
+    #     return posterior

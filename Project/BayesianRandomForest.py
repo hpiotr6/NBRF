@@ -7,7 +7,7 @@ class RandomForest:
         self.clf = NaiveBayes
         self.n_estimators = n_estimators
         self.feature_bagging = feature_bagging
-        self._clfs = []
+        self._clfs = None
 
     @staticmethod
     def feature_bag(X, y):
@@ -29,9 +29,20 @@ class RandomForest:
             _X, _y = self.bag(X, y)
             clf.fit(_X, _y)
             clfs.append(clf)
-        self.clfs = clfs
-        return self.clfs
+        self._clfs = clfs
+        return self._clfs
 
     def predict(self, X):
-        for clf in self.clfs:
+        if self._clfs is None:
+            raise ValueError("Fit classifier first to use predict")
+        arr = []
+        for clf in self._clfs:
             prediction = clf.predict(X)
+            arr.append(prediction)
+        arr = np.array(arr)
+        result = []
+        for i in range(arr.shape[1]):
+            unique, counts = np.unique(arr[:, i], return_counts=True)
+            result.append(unique[np.argmax(counts.shape)])
+
+        return np.array(result)
