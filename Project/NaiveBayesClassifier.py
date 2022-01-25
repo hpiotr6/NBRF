@@ -4,7 +4,8 @@ from collections import defaultdict, Counter
 
 class NaiveBayes:
     def __init__(self) -> None:
-        pass
+        self.prior = None
+        self.likelihood = None
 
     def get_label_indices(self, y):
         label_indices = defaultdict(list)
@@ -50,7 +51,15 @@ class NaiveBayes:
             posteriors.append(posterior.copy())
         return posteriors
 
-    def predict(self, posterior: list):
+    def fit(self, X, y):
+        label_indices = self.get_label_indices(y)
+        self.prior = self.get_prior(label_indices)
+        self.likelihood = self.get_likelihood(X, y)
+
+    def predict(self, X):
+        if self.prior is None or self.likelihood is None:
+            raise ValueError("Fit classifier first to use predict")
+        posterior = self.get_posterior(X, self.prior, self.likelihood)
         result = [max(prediction, key=prediction.get)
                   for prediction in posterior]
         return result
