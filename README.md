@@ -1,6 +1,6 @@
 # Naive Bayes Random Forest Classifier
 
-The project is a Random Forest from-scratch implementation, which relies on a Naive Bayes classifier instead of decision trees.
+The project is a Random Forest from-scratch implementation, which relies on a Naive Bayes classifiers instead of decision trees.
 
 Project covers:
 * Random Forest implementation
