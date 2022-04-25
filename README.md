@@ -30,8 +30,6 @@ if nb_dir not in sys.path:
 ```
 Import dependencies
 ```python
-%load_ext autoreload
-%autoreload 2
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 import numpy as np
